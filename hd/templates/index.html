@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static './css/app.css' %}">
+    <link rel="stylesheet" href="{% static './css/foundation.css' %}">
+    
+    <title>Document</title>
+</head>
+<body>
+    <header class="grid-x grid-padding-x grid-padding-y">
+        <h3 class="cell small-8">
+            Name
+        </h3>
+        <div class="button-group no-gaps">
+            <button class="button dropdown" type="button" data-toggle="dd-create">Работа с формами</button>
+            <button class="button dropdown" type="button" data-toggle="dd-report">Отчеты</button>   
+        </div>
+
+        <div class="dropdown-pane" id="dd-report" data-dropdown >
+            <button class="button clear" data-open="all-tec">Вся техника</button>
+            <button class="button clear" data-open="all-dep">Все отделения</button>
+            <button class="button clear" onclick="alert('Click')">Техника в ремонт</button>
+            <button class="button clear" onclick="alert('Click')">Техника, прибывшая с ремонта</button>
+        </div>
+        <div class="dropdown-pane" id="dd-create" data-dropdown>
+            {% if tecs %}
+            <a class="button clear" href = '/add_rec'>Новая отправка</a>
+            {% else %}
+            <a class="button clear" href="/add_rec" disabled>Новая отправка</a>
+            {% endif %}
+            <a class="button clear" href="/add_tec">Новая техника</a>
+            <a class="button clear" href="/add_dep">Новое отделение</a>
+        </div>
+        
+    </header>
+    <main class="">
+        {% if SRs %}
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Наименование
+                    </th>
+                    <th>
+                        Отделение
+                    </th>
+                    <th>
+                        Дата отправки
+                    </th>
+                    <th>
+                        Дата прибытия
+                    </th>
+                    <th>
+                        Причина отправки
+                    </th>
+                    <th>
+                        Управление
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sr in SRs %}
+                <tr>
+                    <th>{{ sr.technics.name }}</th>
+                    <th>{{ sr.depart.short_name }}</th>
+                    <th> {{sr.send_date}} </th>
+                    <th> {{sr.ret_date}} </th>
+                    <th> {{sr.repair_reason}} </th>
+                    <th>
+                        <div class="button-group no-gaps">
+                            <a class="button secondary" href="rec/{{ sr.id }}">
+                                Редактировать
+                            </a>
+                        <a class="button success">
+                                Выдан
+                            </a>
+                        <a class="button alert">
+                                Списан
+                        </a>
+                        </div>
+                    </th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h3>
+            Техники на отправку нет
+        </h3>
+        {% endif %}
+    </main>
+
+    <div class="reveal" id="all-tec" data-reveal>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Название
+                    </th>
+                    <th>
+                        Тип техники
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tec in tecs %}
+                <tr>
+                    <td>
+                        {{ tec.name }}
+                    </td>
+                    <td>
+                        {{ tec.t_type }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="reveal" id="all-dep" data-reveal>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Название
+                    </th>
+                    <th>
+                        Тип техники
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dep in deps %}
+                <tr>
+                    <td>
+                        {{ dep.name }}
+                    </td>
+                    <td>
+                        {{ dep.short_name }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<script src="{% static 'js/vendor/jquery.js'%}"></script>
+<script src="{% static 'js/vendor/what-input.js'%}"></script>
+<script src="{% static 'js/vendor/foundation.js'%}"></script>
+<script src="{% static 'js/app.js'%}"></script>
+
+
+</body>
+</html>

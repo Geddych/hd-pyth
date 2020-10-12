@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static './css/app.css' %}">
+    <link rel="stylesheet" href="{% static './css/foundation.css' %}">
+    
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Новое отделение</h2>
+        <form id="dep_form" action="" method="post">
+            {% csrf_token %}
+            <div class="grid-container">
+                <label for="" class="medium-6 cell">Название
+                    {{depform.name}}
+            </label>
+            <label for="" class="medium-6 cell">Отдел
+                {{ depform.short_name }}
+            </label>
+            </div>
+
+            <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <button type="submit" class="success button">Сохранить</button>
+
+        </form>
+
+
+    <script src="{% static 'js/vendor/jquery.js'%}"></script>
+    <script src="{% static 'js/vendor/what-input.js'%}"></script>
+    <script src="{% static 'js/vendor/foundation.js'%}"></script>
+    <script src="{% static 'js/app.js'%}"></script>
+</body>
