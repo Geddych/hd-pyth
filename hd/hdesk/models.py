@@ -28,7 +28,9 @@ class Technics(models.Model):
 class SendRecord(models.Model):
     technics = models.ForeignKey('Technics',on_delete=models.CASCADE,related_name='Техника')
     depart = models.ForeignKey('Department',on_delete=models.CASCADE,related_name = 'Отделение',default = None, blank = True)
-    send_date = models.DateField()
+    get_date = models.DateField(blank = True,null=True)
+    send_date = models.DateField(blank = True,null=True)
+    retus_date = models.DateField(blank = True,null=True)
     ret_date = models.DateField(blank = True,null=True)
     repair_reason = models.CharField(max_length=500,blank = True,null=True)
     done = models.BooleanField(blank = True, default = False)

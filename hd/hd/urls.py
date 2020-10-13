@@ -24,5 +24,9 @@ urlpatterns = [
     path(r'rec/<id>',views.edit_rec,name = 'edit_record'),
     path(r'add_tec/',views.add_tec, name = 'add_tec'),
     path(r'add_dep/',views.add_dep, name = 'add_dep'),
-    path(r'writeoff/<id>',views.write_off, name = 'write_off')
+    path(r'writeoff/<id>',views.write_off, name = 'write_off'),
+    path(r'send/<id>',views.send_tec, name = 'send'),
+    path(r'conf/<id>',views.confirm_tec, name = 'confirm'),
+    path(r'return/<id>',views.return_tec, name = 'return'),
+
 ]

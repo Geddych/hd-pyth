@@ -4,7 +4,7 @@ from .models import *
 class RecForm(ModelForm):
     class Meta:
         model = SendRecord
-        fields = ['technics','send_date','depart','ret_date','repair_reason']
+        fields = ['technics','send_date','get_date','ret_date','depart','repair_reason','retus_date']
         widgets = {
             'repair_reason':Textarea(attrs={'cols':30,'rows':20})
         }

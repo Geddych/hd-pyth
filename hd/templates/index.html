@@ -24,6 +24,7 @@
             <button class="button clear" data-open="all-tec">Вся техника</button>
             <button class="button clear" data-open="all-dep">Все отделения</button>
             <button class="button clear" data-open="w-off">Списанная техника</button>
+            <button class="button clear" data-open="t-ret">Выданная техника</button>
         </div>
         <div class="dropdown-pane" id="dd-create" data-dropdown>
             {% if tecs %}
@@ -48,6 +49,9 @@
                         Отделение
                     </th>
                     <th>
+                        Дата получения
+                    </th>
+                    <th>
                         Дата отправки
                     </th>
                     <th>
@@ -64,24 +68,45 @@
             <tbody>
                 {% for sr in SRs %}
                 <tr>
-                    <th>{{ sr.technics.name }}</th>
-                    <th>{{ sr.depart.short_name }}</th>
-                    <th> {{sr.send_date}} </th>
-                    <th> {{sr.ret_date}} </th>
-                    <th> {{sr.repair_reason}} </th>
-                    <th>
+                    <td>{{ sr.technics.name }}</td>
+                    <td>{{ sr.depart.short_name }}</td>
+                    <td> {{ sr.get_date }} </td>
+                    <td> {{sr.send_date}} </td>
+                    <td>
+                         {{ sr.retus_date}}
+                    </td>
+                    {% if repair_reason == None %}
+                        <td> Заправка </td>
+                    {% else %}
+                        <td> {{sr.repair_reason}} </td>
+                    {% endif %}
+                    
+                    <td>
                         <div class="button-group no-gaps">
+                        {% if sr.send_date == None %}
+                            <a href="send/{{ sr.id }}" class="button success">
+                                Отправить
+                            </a>
                             <a class="button secondary" href="rec/{{ sr.id }}">
                                 Редактировать
                             </a>
-                        <a class="button success">
-                                Выдан
-                            </a>
-                        <a class="button alert" href="writeoff/{{ sr.id }}">
-                                Списан
+                        {% else %}
+                        {% if sr.retus_date == None %}
+                        <a class="button success" href="conf/{{sr.id}}">
+                            Принять
                         </a>
+                        {% else %}
+                        <a class="button success" href="return/{{sr.id}}">
+                            Выдать
+                        </a>
+                        <a class="button alert" href="writeoff/{{ sr.id }}">
+                            Списать
+                        </a>
+                        {% endif %}
+                        
+                        {% endif%}
                         </div>
-                    </th>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -93,7 +118,7 @@
         {% endif %}
     </main>
 
-    <div class="reveal" id="all-tec" data-reveal>
+    <div class="reveal" id="all-tec" data-reveal> <!-- Модалка для техники -->
         <table>
             <thead>
                 <tr>
@@ -120,7 +145,7 @@
         </table>
     </div>
 
-    <div class="reveal" id="all-dep" data-reveal>
+    <div class="reveal" id="all-dep" data-reveal>  <!-- Модалка для отделений-->
         <table>
             <thead>
                 <tr>
@@ -147,7 +172,9 @@
         </table>
     </div>
 
-    <div class="reveal" id="w-off" data-reveal>
+    <div class="reveal" id="w-off" data-reveal> <!-- Модалка для списанных -->
+        <div class="grid-container">
+            {% if woff %}
         <table>
             <thead>
                 <tr>
@@ -179,6 +206,60 @@
             </tbody>
         </table>
         <a href="#" class="button">Получить в Excel</a>
+        {% else %}
+            <h2>
+                Списанной техники нет
+            </h2>
+        {% endif %}
+        </div>
+    </div>
+
+    <div class="reveal" id="t-ret" data-reveal> <!-- Модалка для списанных -->
+        <div class="grid-container">
+            {% if woff %}
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Техника
+                    </th>
+                    <th>
+                        Отдел
+                    </th>
+                    <th>
+                        Дата получения
+                    </th>
+                    <th>
+                        Дата возврата
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in rtec %}
+                <tr>
+                    <td>
+                        {{ t.technics }}
+                    </td>
+                    <td>
+                        {{ t.depart.short_name }}
+                    </td>
+                    <td>
+                        {{ t.get_date}}
+                    </td>
+                    <td>
+                        {{ t.ret_date }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="#" class="button">Получить в Excel</a>
+        {% else %}
+            <h2>
+                Списанной техники нет
+            </h2>
+        {% endif %}
+        </div>
     </div>
 
 <script src="{% static 'js/vendor/jquery.js'%}"></script>
