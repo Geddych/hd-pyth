@@ -11,7 +11,7 @@
     <title>Document</title>
 </head>
 
-<body>
+<body class="grid-container">
     <h2>Техника на отправку</h2>
         <form method="post" class="grid-container">
             {% csrf_token %}
@@ -20,7 +20,7 @@
                             {{rcform.technics}}
                     </label>
                     <label for="" class="medium-6 cell">Отдел
-                        {{ rcform.depart }}
+                        {{ rcform.depart}}
                     </label>
                     <label for="" class="medium-6 cell">Дата отправки
                         {{rcform.send_date}}

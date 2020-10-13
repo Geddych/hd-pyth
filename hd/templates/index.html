@@ -23,8 +23,7 @@
         <div class="dropdown-pane" id="dd-report" data-dropdown >
             <button class="button clear" data-open="all-tec">Вся техника</button>
             <button class="button clear" data-open="all-dep">Все отделения</button>
-            <button class="button clear" onclick="alert('Click')">Техника в ремонт</button>
-            <button class="button clear" onclick="alert('Click')">Техника, прибывшая с ремонта</button>
+            <button class="button clear" data-open="w-off">Списанная техника</button>
         </div>
         <div class="dropdown-pane" id="dd-create" data-dropdown>
             {% if tecs %}
@@ -78,7 +77,7 @@
                         <a class="button success">
                                 Выдан
                             </a>
-                        <a class="button alert">
+                        <a class="button alert" href="writeoff/{{ sr.id }}">
                                 Списан
                         </a>
                         </div>
@@ -129,7 +128,7 @@
                         Название
                     </th>
                     <th>
-                        Тип техники
+                        Сокращение
                     </th>
                 </tr>
             </thead>
@@ -146,6 +145,40 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="reveal" id="w-off" data-reveal>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Техника
+                    </th>
+                    <th>
+                        Отдел
+                    </th>
+                    <th>
+                        Дата списания
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for w in woff %}
+                <tr>
+                    <td>
+                        {{ w.name }}
+                    </td>
+                    <td>
+                        {{ w.depart }}
+                    </td>
+                    <td>
+                        {{ w.date_woff }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="#" class="button">Получить в Excel</a>
     </div>
 
 <script src="{% static 'js/vendor/jquery.js'%}"></script>

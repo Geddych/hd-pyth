@@ -11,7 +11,7 @@
     <title>Document</title>
 </head>
 
-<body>
+<body class="grid-container">
     <h3>
         Создать технику
     </h3>
@@ -24,11 +24,15 @@
         <label for="" class="medium-6 cell">Тип
             {{ tform.t_type }}
         </label>
+        <label for="" class="medium-6 cell">Отдел
+            {{ tform.depart }}
+        </label>
         </div>
 
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
         </button>
+        <a type="submit" class="secondary button" href="/">Вернуться</a>
         <button type="submit" class="success button">Сохранить</button>
     </form>
 

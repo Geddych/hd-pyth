@@ -23,5 +23,6 @@ urlpatterns = [
     path(r'add_rec/',views.add_record,name='add_record'),
     path(r'rec/<id>',views.edit_rec,name = 'edit_record'),
     path(r'add_tec/',views.add_tec, name = 'add_tec'),
-    path(r'add_dep/',views.add_dep, name = 'add_dep')
+    path(r'add_dep/',views.add_dep, name = 'add_dep'),
+    path(r'writeoff/<id>',views.write_off, name = 'write_off')
 ]
