@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block content %}  
+   
+   <h2>Техника на отправку</h2>
+        <form method="post" class="grid-container">
+            {% csrf_token %}
+                <div class="grid-x grid-padding-x">
+                    <label for="" class="medium-6 cell">Название
+                            {{rcform.technics}}
+                    </label>
+                    <label for="" class="danger">
+                        {{err}}
+                    </label>
+                    <label for="" class="medium-12 cell">Причина ремонта
+                        {{rcform.repair_reason}}
+                    </label>
+
+                    
+                    <button type="submit" class="success button">Сохранить</button>
+                    <a type="submit" class="secondary button" href="/">Главная</a>
+            </div>
+        </form>
+
+{% endblock %}

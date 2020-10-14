@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-{% load static %}
+{% extends 'layout.html' %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static './css/app.css' %}">
-    <link rel="stylesheet" href="{% static './css/foundation.css' %}">
-    
-    <title>Document</title>
-</head>
+{% block content %}
 
-<body class="grid-container">
+<div>
     <h2>Новое отделение</h2>
         <form id="dep_form" action="" method="post">
             {% csrf_token %}
@@ -32,9 +23,6 @@
 
         </form>
 
+</div>
 
-    <script src="{% static 'js/vendor/jquery.js'%}"></script>
-    <script src="{% static 'js/vendor/what-input.js'%}"></script>
-    <script src="{% static 'js/vendor/foundation.js'%}"></script>
-    <script src="{% static 'js/app.js'%}"></script>
-</body>
+{% endblock %}

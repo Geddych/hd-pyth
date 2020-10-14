@@ -1,0 +1,182 @@
+
+ {% extends 'layout.html' %}
+
+ {% block content %}
+ <div>
+     
+ {% if SRs %}
+ <table>
+     <thead>
+         <tr>
+             <th>
+                 Наименование
+             </th>
+             <th>
+                 Отделение
+             </th>
+             <th>
+                 Дата получения
+             </th>
+             <th>
+                 Дата отправки
+             </th>
+             <th>
+                 Дата прибытия
+             </th>
+             <th>
+                 Причина отправки
+             </th>
+             <th>
+                 Управление
+             </th>
+         </tr>
+     </thead>
+     <tbody>
+         {% for sr in SRs %}
+         <tr>
+             <td>{{ sr.technics.name }}</td>
+             <td>{{ sr.technics.depart.short_name }}</td>
+             <td> {{ sr.get_date }} </td>
+             <td> {{sr.send_date}} </td>
+             <td>
+                  {{ sr.retus_date}}
+             </td>
+             {% if sr.repair_reason == None %}
+                 <td> Заправка </td>
+             {% else %}
+                 <td> {{sr.repair_reason}} </td>
+             {% endif %}
+             
+             <td>
+                 <div class="button-group no-gaps">
+                 {% if sr.send_date == None %}
+                     <a href="send/{{ sr.id }}" class="button success">
+                         Отправить
+                     </a>
+                     <a class="button secondary" href="rec/{{ sr.id }}">
+                         Редактировать
+                     </a>
+                 {% else %}
+                 {% if sr.retus_date == None %}
+                 <a class="button success" href="conf/{{sr.id}}">
+                     Принять
+                 </a>
+                 {% else %}
+                 <a class="button success" href="return/{{sr.id}}">
+                     Выдать
+                 </a>
+                 <a class="button alert" href="writeoff/{{ sr.id }}">
+                     Списать
+                 </a>
+                 {% endif %}
+                 
+                 {% endif%}
+                 </div>
+             </td>
+         </tr>
+         {% endfor %}
+     </tbody>
+ </table>
+ {% else %}
+ <h3>
+     Техники на отправку нет
+ </h3>
+ {% endif %}
+<div class="reveal" id="all-tec" data-reveal> <!-- Модалка для техники -->
+ <table>
+     <thead>
+         <tr>
+             <th>
+                 Название
+             </th>
+             <th>
+                 Тип техники
+             </th>
+         </tr>
+     </thead>
+     <tbody>
+         {% for tec in tecs %}
+         <tr>
+             <td>
+                 {{ tec.name }}
+             </td>
+             <td>
+                 {{ tec.t_type }}
+             </td>
+         </tr>
+         {% endfor %}
+     </tbody>
+ </table>
+</div>
+
+<div class="reveal" id="all-dep" data-reveal>  <!-- Модалка для отделений-->
+ <table>
+     <thead>
+         <tr>
+             <th>
+                 Название
+             </th>
+             <th>
+                 Сокращение
+             </th>
+         </tr>
+     </thead>
+     <tbody>
+         {% for dep in deps %}
+         <tr>
+             <td>
+                 {{ dep.name }}
+             </td>
+             <td>
+                 {{ dep.short_name }}
+             </td>
+         </tr>
+         {% endfor %}
+     </tbody>
+ </table>
+</div>
+
+<div class="reveal" id="w-off" data-reveal> <!-- Модалка для списанных -->
+ <div class="grid-container">
+     {% if woff %}
+ <table>
+     <thead>
+         <tr>
+             <th>
+                 Техника
+             </th>
+             <th>
+                 Отдел
+             </th>
+             <th>
+                 Дата списания
+             </th>
+         </tr>
+     </thead>
+     <tbody>
+         {% for w in woff %}
+         <tr>
+             <td>
+                 {{ w.name }}
+             </td>
+             <td>
+                 {{ w.depart }}
+             </td>
+             <td>
+                 {{ w.date_woff }}
+             </td>
+         </tr>
+         {% endfor %}
+     </tbody>
+ </table>
+ <a href="#" class="button">Получить в Excel</a>
+ {% else %}
+     <h2>
+         Списанной техники нет
+     </h2>
+ {% endif %}
+ </div>
+</div>
+ </div>
+
+    {% endblock %}

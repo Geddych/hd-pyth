@@ -1,17 +1,11 @@
-<!DOCTYPE html>
-{% load static %}
+{% extends 'layout.html' %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static './css/app.css' %}">
-    <link rel="stylesheet" href="{% static './css/foundation.css' %}">
-    
-    <title>Document</title>
-</head>
+{% block content %}
+ 
 
-<body class="grid-container">
+{% endblock %}
+
+ <div>
     <h3>
         Создать технику
     </h3>
@@ -27,6 +21,9 @@
         <label for="" class="medium-6 cell">Отдел
             {{ tform.depart }}
         </label>
+        <label for="" class="medium-6 cell">Номер
+            {{ tform.serial }}
+        </label>
         </div>
 
         <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -36,8 +33,4 @@
         <button type="submit" class="success button">Сохранить</button>
     </form>
 
-        <script src="{% static 'js/vendor/jquery.js'%}"></script>
-<script src="{% static 'js/vendor/what-input.js'%}"></script>
-<script src="{% static 'js/vendor/foundation.js'%}"></script>
-<script src="{% static 'js/app.js'%}"></script>
-</body>
+ </div>

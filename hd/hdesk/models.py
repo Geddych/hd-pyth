@@ -15,19 +15,21 @@ class Department(models.Model):
 class Technics(models.Model):
     name = models.CharField(max_length=128)
     t_type = models.ForeignKey('Type',on_delete = models.CASCADE,related_name = 'Тип')
-
-    #writeoff = models.BooleanField(blank = True, default = False)
+    serial = models.IntegerField(default = 0)
+    depart = models.ForeignKey('Department',on_delete=models.CASCADE,related_name = 'Отделение',default = None, blank = True)
+    writeoff = models.BooleanField(blank = True, default = False)
+    busy = models.BooleanField(blank = True, default = False)
 
 
     def __str__(self):
-        return self.name 
+        return self.name + " | " + self.depart.short_name + " | " + str(self.serial)
     class Meta:
         verbose_name = 'Техника'
         verbose_name_plural = 'Техника'
 
 class SendRecord(models.Model):
     technics = models.ForeignKey('Technics',on_delete=models.CASCADE,related_name='Техника')
-    depart = models.ForeignKey('Department',on_delete=models.CASCADE,related_name = 'Отделение',default = None, blank = True)
+    #depart = models.ForeignKey('Department',on_delete=models.CASCADE,related_name = 'Отделение',default = None, blank = True)
     get_date = models.DateField(blank = True,null=True)
     send_date = models.DateField(blank = True,null=True)
     retus_date = models.DateField(blank = True,null=True)
@@ -40,8 +42,3 @@ class Type(models.Model):
 
     def __str__(self):
         return self.name
-
-class WriteOffTec(models.Model):
-    name = models.CharField(max_length=128)
-    depart = models.CharField(max_length=500)
-    date_woff = models.DateField(default=None, blank = True)

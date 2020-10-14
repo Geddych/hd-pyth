@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>
+    Техника
+</h2>
+<span id = 'err'>
+    {{err}}
+</span>
+<table class="unstriped">
+    <thead>
+        <th>
+            Название
+        </th>
+        <th>
+            Тип
+        </th>
+        <th>
+            Отдел
+        </th>
+        <th>
+            Номер
+        </th>
+        <th>
+
+        </th>
+    </thead>
+    <tbody>
+        <tr>
+            <form action="" method="post">
+                {% csrf_token %}
+                <td>
+                    {{form.name}}
+                </td>
+                <td>
+                    {{form.t_type}}
+                </td>
+                <td>
+                    {{form.depart}}
+                </td>
+                <td>
+                    {{form.serial}}
+                </td>
+                <td>
+                    <button type="submit" class="button success" id="sbm">Добавить</button>
+                </td>
+            </form>
+            
+        </tr>
+        {% for t in tecs %}
+        <tr>
+            <td>{{t.name}}</td>
+            <td>{{t.t_type}}</td>
+            <td>{{t.depart.name}}</td>
+            <td>{{t.serial}}</td>
+            <td>
+                <div class="button-group">
+                    <a href="#" class="button">
+                        Редактировать
+                    </a>
+                    <a href="/delete" class="button alert">
+                        Удалить
+                    </a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    const err = document.getElementById('err')
+    
+    if (err.style.display != 'None') {
+        setTimeout(() => {
+            err.style.display = 'None'
+        },1500)
+        
+    }
+</script>
+
+{% endblock %}
+
