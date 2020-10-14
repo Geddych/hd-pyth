@@ -20,7 +20,11 @@ from hdesk import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'',views.index,name='index'),
+
     path(r'technic/',views.technic,name = 'technic'),
+    path(r'technic/delete/<id>',views.del_tec),
+    path(r'technic/edit/<id>',views.edit_tec),
+
     path(r'add_rec/',views.add_record,name='add_record'),
     path(r'rec/<id>',views.edit_rec,name = 'edit_record'),
     path(r'add_tec/',views.add_tec, name = 'add_tec'),

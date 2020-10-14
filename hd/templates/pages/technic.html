@@ -38,7 +38,7 @@
                     {{form.depart}}
                 </td>
                 <td>
-                    {{form.serial}}
+                    
                 </td>
                 <td>
                     <button type="submit" class="button success" id="sbm">Добавить</button>
@@ -54,10 +54,10 @@
             <td>{{t.serial}}</td>
             <td>
                 <div class="button-group">
-                    <a href="#" class="button">
+                    <a href="/technic/edit/{{ t.id }}" class="button">
                         Редактировать
                     </a>
-                    <a href="/delete" class="button alert">
+                    <a href="/technic/delete/{{ t.id }}" class="button alert">
                         Удалить
                     </a>
                 </div>

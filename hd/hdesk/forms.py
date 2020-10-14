@@ -24,4 +24,4 @@ class DepartForm(ModelForm):
 class TecForm(ModelForm):
     class Meta:
         model = Technics
-        fields = ['name','t_type','depart','serial']
+        fields = ['name','t_type','depart']
