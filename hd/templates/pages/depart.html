@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                Название
+            </th>
+            <th>
+                Сокращеннное название
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <form action="" method="post">
+            {% csrf_token %}
+            <tr>
+                <td>
+                    {{form.name}}
+                </td>
+                <td>
+                    {{form.short_name}}
+                </td>
+                <td>
+                    <button class="button success" type="submit">Добавить</button>
+                </td>
+            </tr>
+        </form>
+    </tbody>
+</table>
+        {% for d in departs %}
+            <ul class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true">
+                <li class="accordion-item" data-accordion-item>
+                  <!-- Accordion tab title -->
+                  <a href="#" class="accordion-title">
+                      <h5>
+                          {{d.name}}
+                      </h5>
+                  </a>
+              
+                  <!-- Accordion tab content: it would start in the open state due to using the `is-active` state class. -->
+                  <div class="accordion-content" data-tab-content>
+                    {% for t in tec %}
+                    <ul>
+                        {% if t.depart.id == d.id %}
+                        <li>
+                            {{t.name}} : {{t.serial}}
+                        </li>
+                        {% endif %}
+                    </ul>
+
+                    {% endfor %}
+                  </div>
+                </li>
+                <!-- ... -->
+              </ul>
+        {% endfor %}
+
+{% endblock %}
+
+<tr>
+    
+</tr>
+
+<td>{{d.name}}</td>
+    <td>{{d.short_name}}</td>
+    <td>
+        <div class="button-group">
+            <a href="/technic/edit/{{ d.id }}" class="button">
+                Редактировать
+            </a>
+            <a href="/technic/delete/{{ d.id }}" class="button alert">
+                Удалить
+            </a>
+        </div>
+    </td>

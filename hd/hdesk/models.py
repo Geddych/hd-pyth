@@ -29,7 +29,6 @@ class Technics(models.Model):
 
 class SendRecord(models.Model):
     technics = models.ForeignKey('Technics',on_delete=models.CASCADE,related_name='Техника')
-    #depart = models.ForeignKey('Department',on_delete=models.CASCADE,related_name = 'Отделение',default = None, blank = True)
     get_date = models.DateField(blank = True,null=True)
     send_date = models.DateField(blank = True,null=True)
     retus_date = models.DateField(blank = True,null=True)

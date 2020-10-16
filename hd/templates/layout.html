@@ -15,83 +15,63 @@
     <header class="top-bar">
         <div class="top-bar-left">
             <h2>
-                {{ user }}
+                {% if user.is_authenticated %}
+                {{user}}
+                {% else %}
+                Unknow
+                {% endif %}
             </h2>
         </div>
 
         <div class="top-bar-right">
+            {% if user.is_authenticated %}
             <ul class="dropdown menu" data-dropdown-menu>
                 <li>
-                    <a href="/">
-                        Главная
-                    </a>
-                </li>
-                <li>
-                    <a href="/add_rec" >Новая запись</a>
+                    <a href="/records">Отправленная техника</a>
+                    <ul class="menu vertical">
+                        <li>
+                            <a href="/records/add">
+                                Отправить технику
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="/technic">Техника</a>
                 </li>
                 <li>
-                    <a href="#">Отделения</a>
+                    <a href="/departments">Отделения</a>
                 </li>
                 <li>
                     <a href="#">Отчеты</a>
                     <ul class="menu vertical">
                         <li><a href="#">Списанная техника</a></li>
+                        <li><a href="/exc">
+                        Вся Техника</a></li>
                         <li>
                             <a href="#">
                                 Отправленная техника
                             </a>
                         </li>
                     </ul>
+                    <li>
+                        <a href="/logout">
+                            Выйти
+                        </a>
+                    </li>
                 </li>
             </ul>
+            {% endif %}
         </div>
 
     </header>
-    <!--
-        <header class="grid-x grid-padding-x grid-padding-y">
-        <h3 class="cell small-8">
-            {{ user }}
-        </h3>
-        <div class="button-group no-gaps">
-            <button class="button dropdown" type="button" data-toggle="dd-create">Работа с формами</button>
-            <button class="button dropdown" type="button" data-toggle="dd-report">Отчеты</button>   
-        </div>
+    <main class="grid-container fluid">
+        <div class="cell center">
+            {% block content %}
 
-        <div class="dropdown-pane" id="dd-report" data-dropdown >
-            <button class="button clear" data-open="all-tec">Вся техника</button>
-            <button class="button clear" data-open="all-dep">Все отделения</button>
-            <button class="button clear" data-open="t-ret">Выданная техника</button>
-        </div>
-        <div class="dropdown-pane" id="dd-create" data-dropdown>
-
-            {% if url != '/add_rec/' %}
-            <a class="button clear" href = '/add_rec'>Новая отправка</a>
-            {% else %}
-            <a class="button clear" href="/add_rec" disabled>Новая отправка</a> 
-            {% endif %}
-
-            {% if url == '/add_tec/' %}
-            <a class="button clear" href="/add_tec" disabled>Новая техника</a>
-            {% else %}
-            <a class = 'button clear' href = "/add_tec">Новая техника</a>
-            {% endif %}
-
-            {% if url == '/add_dep/' %}
-            <a class="button clear" href="/add_dep" disabled>Новое отделение</a>
-            {% else %}
-            <a class="button clear" href="/add_dep">Новое отделение</a>
-            {% endif %}
+            {% endblock %}
         </div>
         
-    </header>
-    -->
-    <main class="">
-        {% block content %}
-
-        {% endblock %}
     </div>
 
 <script src="{% static 'js/vendor/jquery.js'%}"></script>

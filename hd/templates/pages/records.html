@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div>
+    {% if sr %}
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Техника
+                </th>
+                <th>
+                    Отделение
+                </th>
+                <th>
+                    Номер
+                </th>
+                <th>
+                    Дата получения
+                </th>
+                <th>
+                    Дата отправки
+                </th>
+                <th>
+                    Дата возвращения
+                </th>
+                <th>
+                    Дата выдачи
+                </th>
+                <th>
+                    Причина отправки
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in sr %}
+            <tr>
+                <td> {{ s.technics.name }} </td>
+                <td> {{  s.technics.depart.short_name  }} </td>
+                <td> {{ s.technics.serial }} </td>
+                <td> {{s.get_date}} </td>
+                <td> {{s.send_date}} </td>
+                <td> {{s.retus_date}} </td>
+                <td> {{s.ret_date}} </td>
+                <td> {{s.repair_reason}} </td>
+                <td>
+                    {% if s.send_date == None %}
+                  <div class="button-group no-gasp">
+                    <a href="/records/edit/ {{ s.id }}" class="button secondary">Редактировать</a>
+                    <a href="/records/send/{{ s.id }}" class="button success">Отправить</a>
+                  </div>
+                  {% else %}
+                    {% if s.retus_date == None %}
+                  <div class="button_group no-gasp">
+                    <a href="/records/get/ {{ s.id }}" class="button success">Получить</a>
+                  </div>
+                    {% else %}
+
+                  <div class="button_group no-gasp">
+                    <a href="/records/return/ {{ s.id }}" class="button success">Выдать</a>
+                    <a href="/records/writeoff/ {{ s.id }}" class="button alert">Списать</a>
+                  </div>
+                    {% endif %}
+                    {% endif %}
+
+
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+    
+
+    {% else %}
+        <h2>
+            Ебанаврот
+        </h2>
+    {% endif %}
+</div>
+
+{% endblock %}

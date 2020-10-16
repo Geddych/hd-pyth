@@ -25,13 +25,17 @@ urlpatterns = [
     path(r'technic/delete/<id>',views.del_tec),
     path(r'technic/edit/<id>',views.edit_tec),
 
-    path(r'add_rec/',views.add_record,name='add_record'),
-    path(r'rec/<id>',views.edit_rec,name = 'edit_record'),
-    path(r'add_tec/',views.add_tec, name = 'add_tec'),
-    path(r'add_dep/',views.add_dep, name = 'add_dep'),
-    path(r'send/<id>',views.send_tec, name = 'send'),
-    path(r'conf/<id>',views.confirm_tec, name = 'confirm'),
-    path(r'writeoff/<id>',views.writeoff,name = 'writeoff'),
-    path(r'return/<id>',views.return_tec, name = 'return'),
+    path(r'records',views.records),
+    path(r'records/add',views.add_record,name='add_record'),
+    path(r'records/edit/<id>',views.edit_rec,name = 'edit_record'),
+    path(r'records/send/<id>',views.send_tec, name = 'send'),
+    path(r'records/get/<id>',views.confirm_tec, name = 'confirm'),
+    path(r'records/return/<id>',views.return_tec, name = 'return'),
+    path(r'records/writeoff/<id>',views.writeoff,name = 'writeoff'),
+
+    path(r'departments/',views.depart),
+    
+    path(r'logout/',views.user_logout),
+    path(r'exc/',views.download_a_csv)
 
 ]

@@ -1,27 +1,36 @@
-from django.shortcuts import render,redirect,get_object_or_404
-from django.http import Http404,HttpResponseRedirect
-from django.forms import modelformset_factory
+from django.shortcuts import render,redirect,get_object_or_404,reverse
+from django.http import Http404,HttpResponseRedirect,HttpResponse
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout,authenticate,login
 
 import datetime
 import random
 
-from .models import *
+
 from .forms import *
+from .resources import *
+
 
 
 
 # Create your views here.
 
 def index(request):
-    SendTec = SendRecord.objects.filter(done = False)
-    returnedTec = SendRecord.objects.filter(done = True)
-    tec = Technics.objects.all()
-    dep = Department.objects.all()
-    user = request.user
-   
-    context_dict = {'SRs':SendTec,'tecs':tec,'deps':dep,'rtec':returnedTec, 'user':user, 'url':request.path_info}
-    return render(request,'pages/index.html',context = context_dict)
+    err=''
+    AuthForm = UserForm(request.POST)
+    if request.method == "POST":
+        user = authenticate(username = request.POST.get('username'),password = request.POST.get('password'))
+        if user:
+           login(request,user)
+           return redirect('/records')
+        else:
+            err = 'Неправильные данные'
 
+
+    return render(request,'pages/index.html',context = {'err':err,'form':AuthForm})
+
+@login_required
 def technic(request):
     def getExTec(s):
         try:
@@ -43,27 +52,46 @@ def technic(request):
         tf.serial = serial
         tf.save()
         return redirect('/technic')
-        
-
-        
-
     return render(request,'pages/technic.html', {'tecs':tec,'form':TForm,'err':err})
 
+@login_required
+def depart(request):
+    deps = Department.objects.all()
+    tec = Technics.objects.all()
+    DForm = DepartForm(request.POST)
+    if request.method == "POST":
+        if DForm.is_valid:
+            DForm.save(commit=True)   
+            return redirect('/departments')
+
+
+    return render(request,'pages/depart.html',context={'departs':deps,'form':DForm,'tec':tec})
+
+@login_required
 def del_tec(request,id):
     Technics.objects.filter(id = id).delete()
     return redirect('/technic')
 
+@login_required
 def edit_tec(request,id):
     tec = get_object_or_404(Technics,pk = id)
     TForm = TecForm(instance = tec)
-    print(tec)
     tecs = Technics.objects.filter(writeoff = False)
     if request.method == "POST":
         pass
     return render(request,'pages/technic.html',context = {'tform':TForm,'tecs':tecs})
 
+@login_required
+def records(request):
+    sr = SendRecord.objects.filter(done = False)
+
+    return render(request,'pages/records.html',context={'sr':sr})
+
+@login_required
 def add_record(request):
+    sr = Technics.objects.filter(busy=False).filter(writeoff = False)
     RcForm = RecForm(request.POST)
+    RcForm.fields['technics'].queryset = sr
     tecid = request.POST.get('technics')
     err = ''
 
@@ -75,22 +103,11 @@ def add_record(request):
             rc = RcForm.save(commit=True)
             rc.get_date = datetime.date.today()
             rc.save()
-            return redirect('/')
-
-        else:
-            err = 'Такой картридж уже отправлен'
+            return redirect('/records')
             
-    return render(request,'actions/add_record.html',context = {'rcform':RcForm,'err':err,'url':request.path_info})
+    return render(request,'actions/add_record.html',context = {'rcform':RcForm,'err':err,'url':request.path_info,'sr':sr})
 
-def add_dep(request):
-    DepForm = DepartForm(request.POST)
-    
-    if DepForm.is_valid():
-        DepForm.save(commit=True)
-        
-        return redirect('/')
-    return render(request,'add_dep.html',context = {'depform':DepForm,'url':request.path_info})
-
+@login_required
 def add_tec(request):
     TForm = TecForm(request.POST)
     if TForm.is_valid():
@@ -99,37 +116,40 @@ def add_tec(request):
         return redirect('/')
     return render(request,'add_tec.html',context = {'tform':TForm,'url':request.path_info})
 
+@login_required
 def edit_rec(request,id):
     rc = get_object_or_404(SendRecord,pk = id)
     if request.method == 'POST':
         RcForm = RecForm(request.POST,instance = rc)
         if RcForm.is_valid():
             rc = RcForm.save(commit = True)
-            return redirect('/')
+            return redirect('/records')
     else:
         RcForm = RecForm(instance = rc)
         
 
     context_dict = {'rcform':RcForm}
     return render(request,'actions/add_record.html',context_dict)
-
-    
+  
+@login_required  
 def send_tec(request,id):
     sr = get_object_or_404(SendRecord,pk = id)
     now = datetime.date.today()
     sr.send_date = now
     sr.save()
 
-    return redirect('/')
+    return redirect('/records')
 
+@login_required
 def confirm_tec(request,id):
     sr = get_object_or_404(SendRecord,pk = id)
     now = datetime.date.today()
     sr.retus_date = now
     sr.save()
 
-    return redirect('/')
+    return redirect('/records')
 
+@login_required
 def writeoff(request,id):
     sr = get_object_or_404(SendRecord,pk = id)
     tec = get_object_or_404(Technics, pk = sr.technics.id)
@@ -145,6 +165,7 @@ def writeoff(request,id):
 
     return redirect('/')
 
+@login_required
 def return_tec(request,id):
     sr = get_object_or_404(SendRecord,pk = id)
     tec = get_object_or_404(Technics, pk = sr.technics.id)
@@ -157,3 +178,21 @@ def return_tec(request,id):
     tec.save()
 
     return redirect('/')
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect('/')
+
+@login_required
+def download_a_csv(request):
+    dataset = TecResource().export()
+
+    response = HttpResponse(
+            content_type='application/ms-excel',
+        )
+    response['Content-Disposition'] = 'attachment;filename = "technics from {}.xls"'.format(datetime.date.today())
+    response.write(dataset.xls)
+    return response
+    
+    
