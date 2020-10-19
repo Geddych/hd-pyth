@@ -45,11 +45,11 @@
                 <li>
                     <a href="#">Отчеты</a>
                     <ul class="menu vertical">
-                        <li><a href="#">Списанная техника</a></li>
-                        <li><a href="/exc">
+                        <li><a href="/writeoffdownload">Списанная техника</a></li>
+                        <li><a href="/tecrepdownload">
                         Вся Техника</a></li>
                         <li>
-                            <a href="#">
+                            <a href="/downloadcurrsr">
                                 Отправленная техника
                             </a>
                         </li>
@@ -65,13 +65,10 @@
         </div>
 
     </header>
-    <main class="grid-container fluid">
-        <div class="cell center">
-            {% block content %}
+    <main class="">
+        {% block content %}
 
-            {% endblock %}
-        </div>
-        
+        {% endblock %}        
     </div>
 
 <script src="{% static 'js/vendor/jquery.js'%}"></script>

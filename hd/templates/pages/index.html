@@ -2,8 +2,11 @@
  {% extends 'layout.html' %}
 
  {% block content %}
-<div>
-    <div class="grid-x grid-y">
+<div class="grid-x grid-padding-x align-center">
+    <fieldset class="fieldset cell small-2">
+        <legend>
+            Войти
+        </legend>
         <form action="" method="post">
             {% csrf_token %}
             <label for="">Username
@@ -14,7 +17,7 @@
             </label>
             <button type="submit" class="button">Войти</button>
         </form>
-    </div>
+    </fieldset>
 </div>
 
 <span>

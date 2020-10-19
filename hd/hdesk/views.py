@@ -7,7 +7,6 @@ from django.contrib.auth import logout,authenticate,login
 import datetime
 import random
 
-
 from .forms import *
 from .resources import *
 
@@ -103,6 +102,9 @@ def add_record(request):
             rc = RcForm.save(commit=True)
             rc.get_date = datetime.date.today()
             rc.save()
+            if rc.repair_reason == None:
+                rc.repair_reason = 'Заправка'
+            rc.save()
             return redirect('/records')
             
     return render(request,'actions/add_record.html',context = {'rcform':RcForm,'err':err,'url':request.path_info,'sr':sr})
@@ -163,7 +165,7 @@ def writeoff(request,id):
     sr.save()
     tec.save()
 
-    return redirect('/')
+    return redirect('/records')
 
 @login_required
 def return_tec(request,id):
@@ -177,7 +179,7 @@ def return_tec(request,id):
     tec.busy = False
     tec.save()
 
-    return redirect('/')
+    return redirect('/records')
 
 @login_required
 def user_logout(request):
@@ -185,8 +187,9 @@ def user_logout(request):
     return redirect('/')
 
 @login_required
-def download_a_csv(request):
-    dataset = TecResource().export()
+def download_all_tec(request):
+    queryset = Technics.objects.filter(writeoff=False)
+    dataset = TecResource().export(queryset)
 
     response = HttpResponse(
             content_type='application/ms-excel',
@@ -194,5 +197,25 @@ def download_a_csv(request):
     response['Content-Disposition'] = 'attachment;filename = "technics from {}.xls"'.format(datetime.date.today())
     response.write(dataset.xls)
     return response
-    
-    
+
+@login_required
+def dowload_writeoff_tec(request):
+    queryset = Technics.objects.filter(writeoff= True)
+    dataset = TecResource().export(queryset)
+    response = HttpResponse(
+            content_type='application/ms-excel',
+        )
+    response['Content-Disposition'] = 'attachment;filename = "Writeoff from {}.xls"'.format(datetime.date.today())
+    response.write(dataset.xls)
+    return response
+
+@login_required
+def download_on_repair(request):
+    queryset = SendRecord.objects.filter(done = False)
+    dataset = SRResource().export(queryset)
+    response = HttpResponse(
+            content_type='application/ms-excel',
+        )
+    response['Content-Disposition'] = 'attachment;filename = "Sended from {}.xls"'.format(datetime.date.today())
+    response.write(dataset.xls)
+    return response

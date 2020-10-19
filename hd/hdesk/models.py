@@ -14,7 +14,7 @@ class Department(models.Model):
 
 class Technics(models.Model):
     name = models.CharField(max_length=128)
-    t_type = models.ForeignKey('Type',on_delete = models.CASCADE,related_name = 'Тип')
+    t_type = models.ForeignKey('Type',on_delete = models.CASCADE, related_name = 'Тип')
     serial = models.IntegerField(default = 0)
     depart = models.ForeignKey('Department',on_delete=models.CASCADE,related_name = 'Отделение',default = None, blank = True)
     writeoff = models.BooleanField(blank = True, default = False)

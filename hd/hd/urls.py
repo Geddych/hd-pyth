@@ -36,6 +36,9 @@ urlpatterns = [
     path(r'departments/',views.depart),
     
     path(r'logout/',views.user_logout),
-    path(r'exc/',views.download_a_csv)
+    
+    path(r'tecrepdownload/',views.download_all_tec),
+    path(r'writeoffdownload/',views.dowload_writeoff_tec),
+    path(r'downloadcurrsr/',views.download_on_repair)
 
 ]
