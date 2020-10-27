@@ -52,6 +52,12 @@
                       <div class="button-group no-gasp">
                         <a href="/records/edit/ {{ s.id }}" class="button secondary">Редактировать</a>
                         <a href="/records/send/{{ s.id }}" class="button success">Отправить</a>
+                        {% if s.repair_reason == 'Заправка' %}
+                        
+                        {% else %}
+                        <a href="/records/get_doc/ {{ s.id }}" class="button primary">Получить акт</a>
+                        {% endif %}
+                        <a href="/records/delete/ {{ s.id }}" class="button alert">Удалить</a>
                       </div>
                       {% else %}
                         {% if s.retus_date == None %}

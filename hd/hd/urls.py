@@ -32,6 +32,8 @@ urlpatterns = [
     path(r'records/get/<id>',views.confirm_tec, name = 'confirm'),
     path(r'records/return/<id>',views.return_tec, name = 'return'),
     path(r'records/writeoff/<id>',views.writeoff,name = 'writeoff'),
+    path(r'records/delete/<id>',views.del_record,name = 'deleterec'),
+    path(r'records/get_doc/<id>',views.act,name = 'act'),
 
     path(r'departments/',views.depart),
     
