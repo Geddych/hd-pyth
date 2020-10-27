@@ -1,11 +1,15 @@
 from django.shortcuts import render,redirect,get_object_or_404,reverse
-from django.http import Http404,HttpResponseRedirect,HttpResponse
+from django.http import Http404,HttpResponseRedirect,HttpResponse,FileResponse
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout,authenticate,login
 
 import datetime
 import random
+from docxtpl import DocxTemplate
+import io,os
+
+
 
 from .forms import *
 from .resources import *
@@ -140,6 +144,7 @@ def send_tec(request,id):
     sr.send_date = now
     sr.save()
 
+
     return redirect('/records')
 
 @login_required
@@ -219,3 +224,39 @@ def download_on_repair(request):
     response['Content-Disposition'] = 'attachment;filename = "Sended from {}.xls"'.format(datetime.date.today())
     response.write(dataset.xls)
     return response
+
+
+@login_required
+def del_record(request,id):
+    delrec = get_object_or_404(SendRecord,pk = id)
+    tec = get_object_or_404(Technics,pk = delrec.technics.id)
+    tec.busy = False
+    tec.save()
+    delrec.delete()
+    return redirect('/records')
+
+@login_required
+def act(request,id):
+    sr = get_object_or_404(SendRecord,pk = id)
+    user = get_object_or_404(User,username=request.user.username)
+    context = {
+        'depart':sr.technics.depart.name,
+        'name':sr.technics.name,
+        'type':sr.technics.t_type,
+        'serial':sr.technics.serial,
+        'rr':sr.repair_reason,
+        'date':sr.get_date,
+        'fn':user.first_name,
+        'ln':user.last_name
+    }
+    doc = DocxTemplate('act.docx')
+    doc.render(context)
+
+    doc_io = io.BytesIO()
+    doc.save(doc_io)
+    doc_io.seek(0)
+    os.startfile("doc_io","print")
+
+    return FileResponse(doc_io,as_attachment=True,filename=f'generated.docx')
+
+
